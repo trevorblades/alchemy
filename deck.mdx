@@ -1,0 +1,241 @@
+import { Steps, Split, themes } from 'mdx-deck'
+import { FaTwitter } from 'react-icons/fa'
+import flavors from './flavors.png'
+import plan from './plan.png'
+import messi from './messi.jpg'
+import guide from './guide.gif'
+import pictures from './pictures.gif'
+
+export const theme = {
+  ...themes.condensed,
+  ...themes.prism
+}
+
+<Footer>
+
+<h4>
+  <FaTwitter style={{ verticalAlign: '-0.1em' }} fill="#1da1f2" /> @trevorblades
+</h4>
+
+</Footer>
+
+# 🧪 Code Block Alchemy 🧬
+
+## Building multi-language code samples
+
+Trevor Blades, web developer at Apollo
+
+---
+
+# Developer experience
+
+<img src={guide} style={{ maxHeight: 400 }} />
+
+We want to create awesome documentation
+
+---
+
+# Code samples are important
+
+<img src={pictures} style={{ maxHeight: 400 }} />
+
+---
+
+# TypeScript is popular
+
+<img src={flavors} />
+
+Developers want to see code samples written in TypeScript
+
+---
+
+# Our code samples
+
+```js
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: "http://localhost:4000/"
+});
+```
+
+They were written in JavaScript
+
+---
+
+# The challenge
+
+<Steps>
+
+1. Demonstrate how to use Apollo with TypeScript
+1. Preserve JavaScript examples
+1. Avoid writing the same thing twice
+
+</Steps>
+
+---
+
+# Avoid writing the same thing twice
+
+<Steps>
+
+- TypeScript compiles to JavaScript
+- Can read/edit the Markdown AST using Remark
+- `tsc` runs in Node
+
+</Steps>
+
+---
+
+# The plan
+
+<img src={plan} style={{ maxHeight: 250 }} />
+
+- Write code samples in TypeScript
+- Remark plugin compiles TypeScript code blocks to JavaScript
+- Render JavaScript samples alongside TypeScript ones
+
+---
+
+<div style={{ fontSize: '0.75em' }}>
+
+```ts
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject
+} from "@apollo/client";
+
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: "http://localhost:4000/"
+});
+```
+
+</div>
+
+<div style={{ fontSize: '0.75em' }}>
+
+<Steps>
+
+<div>
+
+```js
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+const client = new ApolloClient({
+    cache: new InMemoryCache(),
+    uri: "http://localhost:4000/"
+});
+```
+
+</div>
+
+</Steps>
+
+</div>
+
+---
+
+<img src={messi} style={{ maxHeight: 500 }} />
+
+<Steps>
+
+But what about a more complex example?
+
+</Steps>
+
+---
+
+<div style={{ fontSize: '0.4em' }}>
+
+```tsx
+interface ProfileProps extends RouteComponentProps {}
+
+const Profile: React.FC<ProfileProps> = () => {
+  const { data, loading, error } = useQuery<GetMyTripsTypes.GetMyTrips, any>(
+    GET_MY_TRIPS,
+    { fetchPolicy: "network-only" }
+  );
+  if (loading) return <Loading />;
+  if (error) return <p>ERROR: {error.message}</p>;
+  if (data === undefined) return <p>ERROR</p>;
+
+  return (
+    <Fragment>
+      <Header>My Trips</Header>
+      {data.me && data.me.trips.length ? (
+        data.me.trips.map((launch: any) => (
+          <LaunchTile key={launch.id} launch={launch} />
+        ))
+      ) : (
+        <p>You haven't booked any trips</p>
+      )}
+    </Fragment>
+  );
+}
+
+export default Profile;
+```
+</div>
+
+<div style={{ fontSize: '0.4em' }}>
+  
+<Steps>
+
+<div>
+
+```jsx
+const Profile = () => {
+    const { data, loading, error } = useQuery(GET_MY_TRIPS, { fetchPolicy: "network-only" });
+    if (loading)
+        return <Loading />;
+    if (error)
+        return <p>ERROR: {error.message}</p>;
+    if (data === undefined)
+        return <p>ERROR</p>;
+    return (<Fragment>
+      <Header>My Trips</Header>
+      {data.me && data.me.trips.length ? (data.me.trips.map((launch) => (<LaunchTile key={launch.id} launch={launch}/>))) : (<p>You haven't booked any trips</p>)}
+    </Fragment>);
+};
+export default Profile;
+```
+
+</div>
+
+</Steps>
+
+</div>
+
+---
+
+The TypeScript compiler doesn't care about your formatting
+
+---
+
+## Compiler
+
+- Takes source code written in one language
+- Outputs code in another language
+- Typically, compilers like `tsc` or `gcc` produce code that is ready for excecution
+
+<Steps>
+
+## Transpiler
+
+- Known as a "source-to-source" compiler
+- Output is usually understandable by a human
+- Output still has to go through a compiler to be run
+
+</Steps>
+
+---
+
+# Next slide
+
+---
+
+# Acknowlegements
+
+Compiler vs. Transpiler: https://stackoverflow.com/a/44932758/8190832
