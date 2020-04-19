@@ -1,9 +1,12 @@
-import { Head, Steps, Split, themes } from 'mdx-deck'
+import { Head, Steps, Split, SplitRight, themes } from 'mdx-deck'
 import { FaTwitter } from 'react-icons/fa'
+import MultiCodeBlock from './multi-code-block'
 import flavors from './flavors.png'
 import plan from './plan.png'
 import alchemy from './alchemy.png'
 import title from './title.png'
+import babel from './babel.png'
+import prettier from './prettier.png'
 import disappointed from './disappointed.jpg'
 import messi from './messi.jpg'
 import guide from './guide.gif'
@@ -16,25 +19,39 @@ export const theme = {
 
 <Head>
   <title>Code Block Alchemy</title>
+  <link rel="icon" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/237/alembic_2697.png" />
 </Head>
 
 <Footer>
 
 <h4>
-  <FaTwitter style={{ verticalAlign: '-0.1em' }} fill="#1da1f2" /> @trevorblades
+  <FaTwitter
+    style={{
+      verticalAlign: '-0.1em',
+      marginRight: '0.5em'
+    }}
+    fill="#1da1f2"
+  />
+  @trevorblades
 </h4>
 
 </Footer>
 
-<img src={alchemy} style={{
-  height: 100,
-  marginBottom: '2em'
-}} />
+<img
+  src={alchemy} 
+  style={{
+    height: 100,
+    marginBottom: '2em'
+  }}
+/>
 
-<img src={title} style={{
-  height: 120,
-  marginBottom: '1em'
-}} />
+<img
+  src={title}
+  style={{
+    height: 120,
+    marginBottom: '1em'
+  }}
+/>
 
 ## Building multi-language code samples
 
@@ -192,6 +209,7 @@ const Profile: React.FC<ProfileProps> = () => {
 
 export default Profile;
 ```
+
 </div>
 
 <div style={{ fontSize: '0.4em' }}>
@@ -231,13 +249,15 @@ The TypeScript compiler doesn't care about your formatting
 
 ---
 
-## Compiler
+# Compiler
 
 - Takes source code written in one language
 - Outputs code in another language
 - Typically, compilers like `tsc` or `gcc` produce code that is ready for excecution
 
-## Transpiler
+---
+
+# Transpiler
 
 - Known as a "source-to-source" compiler
 - Output is usually understandable by a human
@@ -245,10 +265,179 @@ The TypeScript compiler doesn't care about your formatting
 
 ---
 
-# Next slide
+<img src={babel} style={{ height: 150 }} />
+
+<Steps>
+
+- Can _transpile_ TypeScript using `@babel/preset-typescript`
+- Doesn't have opinions about formatting
+- Keeps whitespace intact using `retainLines` option
+
+</Steps>
+
+---
+
+<Split>
+
+<div>
+
+TypeScript
+
+<div style={{ fontSize: '0.4em' }}>
+
+```tsx
+interface ProfileProps extends RouteComponentProps {}
+
+const Profile: React.FC<ProfileProps> = () => {
+  const { data, loading, error } = useQuery<GetMyTripsTypes.GetMyTrips, any>(
+    GET_MY_TRIPS,
+    { fetchPolicy: "network-only" }
+  );
+  if (loading) return <Loading />;
+  if (error) return <p>ERROR: {error.message}</p>;
+  if (data === undefined) return <p>ERROR</p>;
+
+  return (
+    <Fragment>
+      <Header>My Trips</Header>
+      {data.me && data.me.trips.length ? (
+        data.me.trips.map((launch: any) => (
+          <LaunchTile key={launch.id} launch={launch} />
+        ))
+      ) : (
+        <p>You haven't booked any trips</p>
+      )}
+    </Fragment>
+  );
+}
+
+export default Profile;
+```
+
+</div>
+
+</div>
+
+Babel
+
+<div style={{ fontSize: '0.4em' }}>
+
+```jsx
+
+
+const Profile = () => {
+  const { data, loading, error } = useQuery(
+  GET_MY_TRIPS,
+  { fetchPolicy: "network-only" });
+
+  if (loading) return <Loading />;
+  if (error) return <p>ERROR: {error.message}</p>;
+  if (data === undefined) return <p>ERROR</p>;
+
+  return (
+    <Fragment>
+      <Header>My Trips</Header>
+      {data.me && data.me.trips.length ?
+      data.me.trips.map((launch) =>
+      <LaunchTile key={launch.id} launch={launch} />) :
+
+
+      <p>You haven't booked any trips</p>}
+
+    </Fragment>);
+
+};
+
+export default Profile;
+```
+
+</div>
+
+</Split>
+
+---
+
+# Almost there
+
+- Pro: Retained same phrasing and intention
+- Con: Empty space where TypeScript code used to be
+- Con: Incorrect indentation and janky formatting in areas
+
+If only the code looked a little...
+
+---
+
+<SplitRight>
+
+<div style={{ fontSize: '0.4em' }}>
+
+```jsx
+const Profile = () => {
+  const { data, loading, error } = useQuery(
+    GET_MY_TRIPS,
+    { fetchPolicy: "network-only" }
+  );
+  if (loading) return <Loading />;
+  if (error) return <p>ERROR: {error.message}</p>;
+  if (data === undefined) return <p>ERROR</p>;
+
+  return (
+    <Fragment>
+      <Header>My Trips</Header>
+      {data.me && data.me.trips.length ? (
+        data.me.trips.map(launch => (
+          <LaunchTile key={launch.id} launch={launch} />
+        ))
+      ) : (
+        <p>You haven't booked any trips</p>
+      )}
+    </Fragment>
+  );
+};
+
+export default Profile;
+```
+
+</div>
+
+<img src={prettier} style={{ height: 250 }} />
+
+✅ Fixes indentation and excessive newlines
+
+</SplitRight>
+
+---
+
+# Remark plugin
+
+````md
+Lorem ipsum dolor sit amet, consectetur adipiscing
+elit, sed do eiusmod tempor incididunt ut labore
+et dolore magna aliqua.
+
+```ts
+// TypeScript code block
+```
+
+<-- insert JS code block here
+````
+
+---
+
+<MultiCodeBlock>
+
+```ts
+// TypeScript code block
+```
+
+```js
+// JavaScript code block
+```
+
+</MultiCodeBlock>
 
 ---
 
 # Acknowlegements
 
-Compiler vs. Transpiler: https://stackoverflow.com/a/44932758/8190832
+Compiler vs. transpiler: https://stackoverflow.com/a/44932758/8190832
