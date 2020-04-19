@@ -1,7 +1,10 @@
-import { Steps, Split, themes } from 'mdx-deck'
+import { Head, Steps, Split, themes } from 'mdx-deck'
 import { FaTwitter } from 'react-icons/fa'
 import flavors from './flavors.png'
 import plan from './plan.png'
+import alchemy from './alchemy.png'
+import title from './title.png'
+import disappointed from './disappointed.jpg'
 import messi from './messi.jpg'
 import guide from './guide.gif'
 import pictures from './pictures.gif'
@@ -11,6 +14,10 @@ export const theme = {
   ...themes.prism
 }
 
+<Head>
+  <title>Code Block Alchemy</title>
+</Head>
+
 <Footer>
 
 <h4>
@@ -19,7 +26,15 @@ export const theme = {
 
 </Footer>
 
-# 🧪 Code Block Alchemy 🧬
+<img src={alchemy} style={{
+  height: 100,
+  marginBottom: '2em'
+}} />
+
+<img src={title} style={{
+  height: 120,
+  marginBottom: '1em'
+}} />
 
 ## Building multi-language code samples
 
@@ -31,7 +46,7 @@ Trevor Blades, web developer at Apollo
 
 <img src={guide} style={{ maxHeight: 400 }} />
 
-We want to create awesome documentation
+We create awesome documentation
 
 ---
 
@@ -60,7 +75,7 @@ const client = new ApolloClient({
 });
 ```
 
-They were written in JavaScript
+Not written in TypeScript
 
 ---
 
@@ -210,6 +225,8 @@ export default Profile;
 
 ---
 
+<img src={disappointed} style={{ maxHeight: 400 }} />
+
 The TypeScript compiler doesn't care about your formatting
 
 ---
@@ -220,15 +237,11 @@ The TypeScript compiler doesn't care about your formatting
 - Outputs code in another language
 - Typically, compilers like `tsc` or `gcc` produce code that is ready for excecution
 
-<Steps>
-
 ## Transpiler
 
 - Known as a "source-to-source" compiler
 - Output is usually understandable by a human
 - Output still has to go through a compiler to be run
-
-</Steps>
 
 ---
 
