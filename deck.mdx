@@ -1,6 +1,6 @@
 import { Head, Steps, Split, Invert, SplitRight, themes } from 'mdx-deck'
 import { FaTwitter } from 'react-icons/fa'
-import MultiCodeBlock from './multi-code-block'
+import MultiCodeBlock, { MultiCodeBlockProvider } from './multi-code-block'
 import TwitterHandle from './twitter-handle'
 import end from './end.jpg'
 import flavors from './flavors.png'
@@ -573,6 +573,8 @@ const sum: number = add(6, 4); // 10
   }}
 >
 
+<MultiCodeBlockProvider>
+
 <MultiCodeBlock>
 
 ```ts
@@ -592,6 +594,8 @@ const sum = add(6, 4); // 10
 ```
 
 </MultiCodeBlock>
+
+</MultiCodeBlockProvider>
 
 </div>
 
