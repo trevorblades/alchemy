@@ -1,4 +1,3 @@
-<br>
 <div align="center">
   <img src="title.png" height="80">
 </div>
