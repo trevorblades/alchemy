@@ -1,8 +1,11 @@
 import { Head, Steps, Split, SplitRight, themes } from 'mdx-deck'
 import { FaTwitter } from 'react-icons/fa'
 import MultiCodeBlock from './multi-code-block'
+import TwitterHandle from './twitter-handle'
+import end from './end.jpg'
 import flavors from './flavors.png'
 import plan from './plan.png'
+import newPlan from './new-plan.png'
 import alchemy from './alchemy.png'
 import title from './title.png'
 import babel from './babel.png'
@@ -25,14 +28,7 @@ export const theme = {
 <Footer>
 
 <h4>
-  <FaTwitter
-    style={{
-      verticalAlign: '-0.1em',
-      marginRight: '0.5em'
-    }}
-    fill="#1da1f2"
-  />
-  @trevorblades
+  <TwitterHandle />
 </h4>
 
 </Footer>
@@ -113,10 +109,18 @@ Not written in TypeScript
 <Steps>
 
 - TypeScript compiles to JavaScript
-- Can read/edit the Markdown AST using Remark
+- Can read/edit the Markdown AST using a Remark plugin
 - `tsc` runs in Node
 
 </Steps>
+
+---
+
+# Remark plugins 101
+
+- "Visit" nodes in the Markdown AST by type (ie. `pre`)
+- Perform a transformation
+- Mutate the AST
 
 ---
 
@@ -125,12 +129,13 @@ Not written in TypeScript
 <img src={plan} style={{ maxHeight: 250 }} />
 
 - Write code samples in TypeScript
-- Remark plugin compiles TypeScript code blocks to JavaScript
-- Render JavaScript samples alongside TypeScript ones
+- Compile TypeScript to JavaScript using `tsc`
+- Insert new code block into the page
+- Toggle between TypeScript and JavaScript
 
 ---
 
-<div style={{ fontSize: '0.75em' }}>
+<div style={{ fontSize: '0.7em' }}>
 
 ```ts
 import {
@@ -147,7 +152,7 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 
 </div>
 
-<div style={{ fontSize: '0.75em' }}>
+<div style={{ fontSize: '0.7em' }}>
 
 <Steps>
 
@@ -247,6 +252,9 @@ export default Profile;
 
 The TypeScript compiler doesn't care about your formatting
 
+- All empty lines are removed
+- New line breaks are introduced
+
 ---
 
 # Compiler
@@ -271,7 +279,7 @@ The TypeScript compiler doesn't care about your formatting
 
 - Can _transpile_ TypeScript using `@babel/preset-typescript`
 - Doesn't have opinions about formatting
-- Keeps whitespace intact using `retainLines` option
+- Keeps empty lines using `retainLines` option
 
 </Steps>
 
@@ -279,11 +287,11 @@ The TypeScript compiler doesn't care about your formatting
 
 <Split>
 
-<div>
+<div style={{ marginRight: '1em' }}>
 
-TypeScript
+## TypeScript
 
-<div style={{ fontSize: '0.4em' }}>
+<div style={{ fontSize: '0.5em' }}>
 
 ```tsx
 interface ProfileProps extends RouteComponentProps {}
@@ -318,9 +326,11 @@ export default Profile;
 
 </div>
 
-Babel
+<div style={{ marginLeft: '1em' }}>
 
-<div style={{ fontSize: '0.4em' }}>
+## Babel
+
+<div style={{ fontSize: '0.5em' }}>
 
 ```jsx
 
@@ -353,13 +363,15 @@ export default Profile;
 
 </div>
 
+</div>
+
 </Split>
 
 ---
 
 # Almost there
 
-- Pro: Retained same phrasing and intention
+- Pro: Retained same phrasing and empty lines
 - Con: Empty space where TypeScript code used to be
 - Con: Incorrect indentation and janky formatting in areas
 
@@ -369,7 +381,7 @@ If only the code looked a little...
 
 <SplitRight>
 
-<div style={{ fontSize: '0.4em' }}>
+<div style={{ fontSize: '0.6em' }}>
 
 ```jsx
 const Profile = () => {
@@ -408,7 +420,20 @@ export default Profile;
 
 ---
 
-# Remark plugin
+# The new plan
+
+<img style={{ maxHeight: 250 }} src={newPlan} />
+
+- Write code samples in TypeScript
+- ~~Compile TypeScript to JavaScript using `tsc`~~
+- Transpile TypeScript to JavaScript using Babel
+- ✨ Fix formatting using Prettier ✨
+- Insert new code block into the page
+- Toggle between TypeScript and JavaScript
+
+---
+
+# Insert new code block into the page
 
 ````md
 Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -419,25 +444,179 @@ et dolore magna aliqua.
 // TypeScript code block
 ```
 
-<-- insert JS code block here
+<-- JS code block inserted here
 ````
 
 ---
 
+# This is great, but...
+
+- Not _every_ TypeScript code block should be transpiled
+- We only want to render one code block at a time
+
+---
+
+# Using a wrapper
+
+_Only_ transpile blocks where the previous node is `<div>` and the next node is `</div>`
+
+<div style={{ fontSize: '0.6em' }}>
+
+````md
+Lorem ipsum dolor sit amet, consectetur adipiscing
+elit, sed do eiusmod tempor incididunt ut labore
+et dolore magna aliqua.
+
+<div>
+
+```ts
+// This code block gets transpiled
+```
+
+<-- JS code block inserted here
+
+</div>
+
+```ts
+// This code block does not get transpiled
+```
+````
+
+</div>
+
+---
+
+# Toggle between TypeScript and JavaScript 
+
+<div style={{fontSize: '0.6em'}}>
+
+```jsx
+import React, { useState } from 'react';
+
+function MultiCodeBlock(props) {
+  const [index, setIndex] = useState(0);
+  return (
+    <>
+      Select a language:
+      <select
+        value={index}
+        onChange={event => {
+          setIndex(event.target.value);
+        }}
+      >
+        {props.children.map((child, index) => (
+          <option key={index} value={index}>
+            {child.props.children.props.className.replace('language-', '')}
+          </option>
+        ))}
+      </select>
+      {props.children[index]}
+    </>
+  );
+}
+```
+
+</div>
+
+---
+
+<Split>
+
+<div style={{ marginRight: '1em' }}>
+
+## MDX
+
+<div style={{fontSize: '0.6em'}}>
+
+````md
+Lorem ipsum dolor sit amet, consectetur adipiscing
+elit, sed do eiusmod tempor incididunt ut labore
+et dolore magna aliqua.
+
 <MultiCodeBlock>
 
 ```ts
-// TypeScript code block
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+const sum: number = add(6, 4); // 10
+```
+
+</MultiCodeBlock>
+````
+
+</div>
+
+</div>
+
+<div style={{ marginLeft: '1em' }}>
+
+## Output
+
+<div
+  style={{
+    width: 640,
+    fontSize: '0.6em'
+  }}
+>
+
+<MultiCodeBlock>
+
+```ts
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+const sum: number = add(6, 4); // 10
 ```
 
 ```js
-// JavaScript code block
+function add(a, b) {
+  return a + b;
+}
+
+const sum = add(6, 4); // 10
 ```
 
 </MultiCodeBlock>
 
+</div>
+
+</div>
+
+</Split>
+
 ---
 
-# Acknowlegements
+# Next steps
 
-Compiler vs. transpiler: https://stackoverflow.com/a/44932758/8190832
+- Preserve unused imports
+- Sync language selection across all code blocks in a page
+
+---
+
+# Tools used
+
+- Remark: Read/edit the Markdown AST
+- Babel: Transpile the TypeScript code
+- Prettier: Format the output
+- MDX: Use React components in Markdown
+
+---
+
+<img
+  src={end}
+  style={{
+    maxHeight: 300,
+    marginBottom: '1em'
+  }}
+/>
+
+- Compiler vs. transpiler: https://stackoverflow.com/a/44932758/8190832
+- Remark plugin: https://github.com/trevorblades/remark-typescript
+- Slides: https://alchemy.trevorblades.com
+
+<h3>
+  <TwitterHandle />
+</h3>

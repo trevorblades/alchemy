@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 
 export default function MultiCodeBlock(props) {
   const [index, setIndex] = useState(0);
-  const selectedChild = props.children[index];
   return (
-    <div>
+    <>
+      Select a language:
       <select
-        onChange={event => setIndex(event.target.value)}
-        style={{ fontSize: '1em' }}
+        value={index}
+        onChange={event => {
+          setIndex(event.target.value);
+        }}
+        style={{ fontSize: 'inherit' }}
       >
         {props.children.map((child, index) => (
           <option key={index} value={index}>
@@ -15,7 +18,7 @@ export default function MultiCodeBlock(props) {
           </option>
         ))}
       </select>
-      {selectedChild}
-    </div>
+      {props.children[index]}
+    </>
   );
 }
