@@ -1,4 +1,4 @@
-import { Head, Steps, Split, SplitRight, themes } from 'mdx-deck'
+import { Head, Steps, Split, Invert, SplitRight, themes } from 'mdx-deck'
 import { FaTwitter } from 'react-icons/fa'
 import MultiCodeBlock from './multi-code-block'
 import TwitterHandle from './twitter-handle'
@@ -14,7 +14,6 @@ import disappointed from './disappointed.jpg'
 import messi from './messi.jpg'
 import guide from './guide.gif'
 import rainbow from './rainbow.gif'
-import pictures from './pictures.gif'
 
 export const theme = {
   ...themes.condensed,
@@ -56,17 +55,27 @@ Trevor Blades, web developer at Apollo
 
 ---
 
+<Invert>
+
 # Developer experience
 
 <img src={guide} style={{ maxHeight: 400 }} />
 
-We create awesome documentation
+We want to create awesome documentation
+
+</Invert>
 
 ---
 
 # Code samples are important
 
-<img src={pictures} style={{ maxHeight: 400 }} />
+<Steps>
+
+- Help developers understand complex ideas
+- See what working code should look like
+- Written using tools that developers are using
+
+</Steps>
 
 ---
 
@@ -110,8 +119,10 @@ Not written in TypeScript
 <Steps>
 
 - TypeScript compiles to JavaScript
-- Can read/edit the Markdown AST using a Remark plugin
-- `tsc` runs in Node
+- Code samples are written in Markdown
+- We use Remark to process the Markdown content
+- Remark plugins allow us to change Markdown using Node.js
+- The TypeScript compiler (`tsc`) runs in Node.js
 
 </Steps>
 
@@ -119,9 +130,9 @@ Not written in TypeScript
 
 # Remark plugins 101
 
-- "Visit" nodes in the Markdown AST by type (ie. `pre`)
-- Perform a transformation
-- Mutate the AST
+1. "Visit" nodes in the Markdown AST by type (ie. `pre`)
+1. Perform some work
+1. Mutate the Markdown AST
 
 ---
 
@@ -249,12 +260,19 @@ export default Profile;
 
 ---
 
-<img src={disappointed} style={{ maxHeight: 400 }} />
+The TypeScript compiler doesn't care about your whitespace
 
-The TypeScript compiler doesn't care about your formatting
-
-- All empty lines are removed
+- Empty lines are removed
+- Spaces are converted to tabs
 - New line breaks are introduced
+
+<Steps>
+  
+<div>
+  <img src={disappointed} style={{ maxHeight: 400 }} />
+</div>
+
+</Steps>
 
 ---
 
@@ -262,7 +280,7 @@ The TypeScript compiler doesn't care about your formatting
 
 - Takes source code written in one language
 - Outputs code in another language
-- Typically, compilers like `tsc` or `gcc` produce code that is ready for excecution
+- Typically, compilers like `tsc` or `gcc` produce code that is meant to be run, _not_ read
 
 ---
 
@@ -274,7 +292,7 @@ The TypeScript compiler doesn't care about your formatting
 
 ---
 
-<img src={babel} style={{ height: 150 }} />
+<img src={babel} style={{ height: 200 }} />
 
 <Steps>
 
@@ -292,7 +310,7 @@ The TypeScript compiler doesn't care about your formatting
 
 ## TypeScript
 
-<div style={{ fontSize: '0.5em' }}>
+<div style={{ fontSize: '0.6em' }}>
 
 ```tsx
 interface ProfileProps extends RouteComponentProps {}
@@ -331,7 +349,7 @@ export default Profile;
 
 ## Babel
 
-<div style={{ fontSize: '0.5em' }}>
+<div style={{ fontSize: '0.6em' }}>
 
 ```jsx
 
@@ -372,11 +390,9 @@ export default Profile;
 
 # Almost there
 
-- Pro: Retained same phrasing and empty lines
-- Con: Empty space where TypeScript code used to be
-- Con: Incorrect indentation and janky formatting in areas
-
-If only the code looked a little...
+- ✅ Retained same phrasing and whitespace
+- 👎 Empty space where TypeScript code used to be
+- 👎 Incorrect indentation and janky formatting in areas
 
 ---
 
@@ -415,7 +431,7 @@ export default Profile;
 
 <img src={prettier} style={{ height: 250 }} />
 
-✅ Fixes indentation and excessive newlines
+✅ Fixes indentation and empty space
 
 </SplitRight>
 
@@ -448,12 +464,7 @@ et dolore magna aliqua.
 <-- JS code block inserted here
 ````
 
----
-
-# This is great, but...
-
-- Not _every_ TypeScript code block should be transpiled
-- We only want to render one code block at a time
+That's cool, but not _every_ TypeScript code block should be transpiled
 
 ---
 
@@ -474,8 +485,6 @@ et dolore magna aliqua.
 // This code block gets transpiled
 ```
 
-<-- JS code block inserted here
-
 </div>
 
 ```ts
@@ -494,7 +503,7 @@ et dolore magna aliqua.
 ```jsx
 import React, { useState } from 'react';
 
-function MultiCodeBlock(props) {
+export function MultiCodeBlock(props) {
   const [index, setIndex] = useState(0);
   return (
     <>
@@ -530,6 +539,8 @@ function MultiCodeBlock(props) {
 <div style={{fontSize: '0.6em'}}>
 
 ````md
+import { MultiCodeBlock } from './components'
+
 Lorem ipsum dolor sit amet, consectetur adipiscing
 elit, sed do eiusmod tempor incididunt ut labore
 et dolore magna aliqua.
@@ -590,27 +601,24 @@ const sum = add(6, 4); // 10
 
 ---
 
-# Developer experience
-
-<img src={rainbow} style={{ maxHeight: 400 }} />
-
-We create awesome documentation
-
----
-
-# Next steps
-
-- Preserve unused imports
-- Sync language selection across all code blocks in a page
-
----
-
 # Tools used
 
 - Remark: Read/edit the Markdown AST
 - Babel: Transpile the TypeScript code
 - Prettier: Format the output
 - MDX: Use React components in Markdown
+
+---
+
+<Invert>
+
+# Developer experience
+
+<img src={rainbow} style={{ maxHeight: 400 }} />
+
+We create awesome documentation
+
+</Invert>
 
 ---
 
