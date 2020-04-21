@@ -1,6 +1,6 @@
 import { Head, Steps, Split, Invert, SplitRight, themes } from 'mdx-deck'
 import { FaTwitter } from 'react-icons/fa'
-import MultiCodeBlock, { MultiCodeBlockProvider } from './multi-code-block'
+import MultiCodeBlock, { CodeBlockProvider } from './components'
 import TwitterHandle from './twitter-handle'
 import end from './end.jpg'
 import flavors from './flavors.png'
@@ -51,7 +51,7 @@ export const theme = {
 
 ## Building multi-language code samples
 
-Trevor Blades, web developer at Apollo
+Trevor Blades, web developer
 
 ---
 
@@ -262,9 +262,10 @@ export default Profile;
 
 The TypeScript compiler doesn't care about your whitespace
 
-- Empty lines are removed
-- Spaces are converted to tabs
-- New line breaks are introduced
+- ✅ It is JavaScript
+- 👎 Empty lines are removed
+- 👎 Spaces are converted to tabs
+- 👎 New line breaks are introduced
 
 <Steps>
   
@@ -541,10 +542,6 @@ export function MultiCodeBlock(props) {
 ````md
 import { MultiCodeBlock } from './components'
 
-Lorem ipsum dolor sit amet, consectetur adipiscing
-elit, sed do eiusmod tempor incididunt ut labore
-et dolore magna aliqua.
-
 <MultiCodeBlock>
 
 ```ts
@@ -569,11 +566,12 @@ const sum: number = add(6, 4); // 10
 <div
   style={{
     width: 640,
-    fontSize: '0.6em'
+    fontSize: '0.6em',
+    textAlign: 'left'
   }}
 >
 
-<MultiCodeBlockProvider>
+<CodeBlockProvider>
 
 <MultiCodeBlock>
 
@@ -595,7 +593,144 @@ const sum = add(6, 4); // 10
 
 </MultiCodeBlock>
 
-</MultiCodeBlockProvider>
+</CodeBlockProvider>
+
+</div>
+
+</div>
+
+</Split>
+
+---
+
+# Works for one, not for many
+
+- Each code block manages its own state
+- Reader is required to change each code block one at a time
+- All code blocks should remain in sync
+
+---
+
+# Context to the rescue
+
+<div style={{ fontSize: '0.7em' }}>
+
+```jsx
+import React, { createContext } from 'react';
+
+const CodeBlockContext = createContext();
+
+export function CodeBlockProvider(props) {
+  const state = useState(0);
+  return (
+    <CodeBlockContext.Provider value={state}>
+      {props.children}
+    </CodeBlockContext.Provider>
+  );
+}
+```
+
+</div>
+
+<div style={{ fontSize: '0.7em' }}>
+
+```diff
+export function MultiCodeBlock(props) {
+- const [index, setIndex] = useState(0);
++ const [index, setIndex] = useContext(CodeBlockContext);
+  // rest of component
+}
+```
+
+</div>
+
+---
+
+<Split>
+
+<div style={{ marginRight: '1em' }}>
+
+## MDX
+
+<div
+  style={{
+    width: 400,
+    fontSize: '0.6em'
+  }}
+>
+
+````md
+import {
+  MultiCodeBlock,
+  CodeBlockProvider
+} from './components'
+
+<CodeBlockProvider>
+
+<MultiCodeBlock>
+
+```ts
+const foo: number = 123;
+```
+
+</MultiCodeBlock>
+
+<MultiCodeBlock>
+
+```ts
+const bar: string = 'abc';
+```
+
+</MultiCodeBlock>
+
+</CodeBlockProvider>
+````
+
+</div>
+
+</div>
+
+<div style={{ marginLeft: '1em' }}>
+
+## Output
+
+<div
+  style={{
+    width: 400,
+    fontSize: '0.6em',
+    textAlign: 'left'
+  }}
+>
+
+<CodeBlockProvider>
+
+<MultiCodeBlock>
+
+```ts
+const foo: number = 123;
+```
+
+```js
+const foo = 123;
+```
+
+</MultiCodeBlock>
+
+<br />
+
+<MultiCodeBlock>
+
+```ts
+const bar: string = 'abc';
+```
+
+```js
+const bar = 'abc';
+```
+
+</MultiCodeBlock>
+
+</CodeBlockProvider>
 
 </div>
 

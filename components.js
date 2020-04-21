@@ -1,18 +1,18 @@
 import React, { useState, useContext, createContext } from 'react';
 
-const MultiCodeBlockContext = createContext();
+const CodeBlockContext = createContext();
 
-export function MultiCodeBlockProvider(props) {
+export function CodeBlockProvider(props) {
   const state = useState(0); 
   return (
-    <MultiCodeBlockContext.Provider value={state}>
+    <CodeBlockContext.Provider value={state}>
       {props.children}
-    </MultiCodeBlockContext.Provider>
+    </CodeBlockContext.Provider>
   );
 }
 
 export default function MultiCodeBlock(props) {
-  const [index, setIndex] = useContext(MultiCodeBlockContext);
+  const [index, setIndex] = useContext(CodeBlockContext);
   return (
     <>
       Select a language:
