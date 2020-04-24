@@ -1,4 +1,5 @@
 import React, { useState, useContext, createContext } from 'react';
+import { FaTwitter } from 'react-icons/fa';
 
 const CodeBlockContext = createContext();
 
@@ -11,7 +12,7 @@ export function CodeBlockProvider(props) {
   );
 }
 
-export default function MultiCodeBlock(props) {
+export function MultiCodeBlock(props) {
   const [index, setIndex] = useContext(CodeBlockContext);
   return (
     <>
@@ -30,6 +31,21 @@ export default function MultiCodeBlock(props) {
         ))}
       </select>
       {props.children[index]}
+    </>
+  );
+}
+
+export function TwitterHandle() {
+  return (
+    <>
+      <FaTwitter
+        style={{
+          verticalAlign: '-0.1em',
+          marginRight: '0.5em'
+        }}
+        fill="#1da1f2"
+      />
+      @trevorblades
     </>
   );
 }

@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "mdx-deck deck.mdx"
+    "start": "mdx-deck src/deck.mdx"
   },
   "dependencies": {
     "mdx-deck": "^4.1.1",
